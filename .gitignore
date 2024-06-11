@@ -25,6 +25,7 @@
 
 #게임 리소스 정리 
 /[Aa]ssets/GameResources/
+/[Aa]ssets/GameResources*
 
 # Visual Studio cache directory
 .vs/
