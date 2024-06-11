@@ -3,25 +3,36 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    [Header("[ 스텟 설정 ]")]
     [SerializeField]
     [Range(0.0f, 10.0f)]
     float speed = 1.5f;
 
+    [SerializeField]
+    float jumpPower = 1.0f;
+
     CharacterController controller;
     Animator anim;
     Transform cam;
-
+    [Header("[ 확인용 ]")]
     [SerializeField]
     Vector2 inputVec;
     Vector3 moveVec;
 
     [SerializeField]
     bool isInteractive;
+    [SerializeField]
+    bool isJump;
+    [SerializeField]
+    bool isJumping;
+    float verticalVelocity;
 
+    [Header("[ 앞 레이어 RayCast ]")]
     [SerializeField]
     float groundCheckDistance = 1.0f;
     [SerializeField]
     LayerMask groundLayer;
+
 
     void Awake()
     {
@@ -32,7 +43,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("controller.isGrounded : " + controller.isGrounded);
         if (controller.isGrounded)
         {
             moveVec = cam.right * inputVec.x + cam.forward * inputVec.y;
@@ -44,18 +54,32 @@ public class Player : MonoBehaviour
                 Quaternion nextQuat = Quaternion.Slerp(transform.rotation, dirQuat, 0.3f);
                 transform.rotation = nextQuat;
 
-                // 앞쪽에 그라운드가 있는지 확인
                 if (!CanMoveForward(moveVec))
                 {
-                    moveVec = Vector3.zero; // 그라운드가 없으면 이동 멈춤
+                    moveVec = Vector3.zero;
                 }
             }
-        }
-    }
 
-    void FixedUpdate()
-    {
-        controller.SimpleMove(moveVec * speed * Time.deltaTime * 50);
+            //Player Jump
+            if (isJump && !isJumping)
+            {
+                isJumping = true;
+                verticalVelocity = jumpPower;
+            }
+        }
+        else
+        {
+            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        }
+
+        moveVec.y = verticalVelocity;
+        controller.Move(moveVec * speed * Time.deltaTime);
+
+        if (controller.isGrounded && verticalVelocity < 0)
+        {
+            isJumping = false;
+            verticalVelocity = 0;
+        }
     }
 
     public void ActionMove(InputAction.CallbackContext context)
@@ -65,6 +89,26 @@ public class Player : MonoBehaviour
 
     public void ActionInteractive(InputAction.CallbackContext context)
     {
+        if (context.performed)
+        {
+            isInteractive = true;
+        }
+        else if (context.canceled)
+        {
+            isInteractive = false;
+        }
+    }
+
+    public void ActionJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            isJump = true;
+        }
+        else if (context.canceled)
+        {
+            isJump = false;
+        }
     }
 
     bool CanMoveForward(Vector3 moveDirection)
@@ -74,8 +118,8 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(origin, direction, out RaycastHit hit, groundCheckDistance, groundLayer))
         {
-            return true; 
+            return true;
         }
-        return false; 
+        return false;
     }
 }
