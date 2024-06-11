@@ -3,7 +3,11 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [Header("[ 스텟 설정 ]")]
+    CharacterController controller;
+    Animator anim;
+    Transform cam;
+
+    [Header("[ 속성 및 상태 변수 설정 ]")]
     [SerializeField]
     [Range(0.0f, 10.0f)]
     float speed = 1.5f;
@@ -11,10 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     float jumpPower = 1.0f;
 
-    CharacterController controller;
-    Animator anim;
-    Transform cam;
-    [Header("[ 확인용 ]")]
+    [Header("[ 입력 및 이동 관련 여부 ]")]
     [SerializeField]
     Vector2 inputVec;
     Vector3 moveVec;
@@ -27,12 +28,11 @@ public class Player : MonoBehaviour
     bool isJumping;
     float verticalVelocity;
 
-    [Header("[ 앞 레이어 RayCast ]")]
+    [Header("[ 그라운드 체크 설정 ]")]
     [SerializeField]
     float groundCheckDistance = 1.0f;
     [SerializeField]
     LayerMask groundLayer;
-
 
     void Awake()
     {
@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        // 수평 이동 처리
         if (controller.isGrounded)
         {
             moveVec = cam.right * inputVec.x + cam.forward * inputVec.y;
@@ -60,26 +61,32 @@ public class Player : MonoBehaviour
                 }
             }
 
-            //Player Jump
+            // 점프 처리
             if (isJump && !isJumping)
             {
                 isJumping = true;
                 verticalVelocity = jumpPower;
             }
         }
+    }
+
+    void FixedUpdate()
+    {
+        if (controller.isGrounded)
+        {
+            if (verticalVelocity < 0)
+            {
+                verticalVelocity = 0;
+                isJumping = false;
+            }
+        }
         else
         {
-            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+            verticalVelocity += Physics.gravity.y * Time.fixedDeltaTime;
         }
 
         moveVec.y = verticalVelocity;
-        controller.Move(moveVec * speed * Time.deltaTime);
-
-        if (controller.isGrounded && verticalVelocity < 0)
-        {
-            isJumping = false;
-            verticalVelocity = 0;
-        }
+        controller.Move(moveVec * speed * Time.fixedDeltaTime);
     }
 
     public void ActionMove(InputAction.CallbackContext context)
