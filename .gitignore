@@ -27,6 +27,11 @@
 /[Aa]ssets/GameResources/
 /[Aa]ssets/GameResources*
 
+# Ignore DG Tweening 
+/[Aa]ssets/[Pp]lugins/Demigiant/
+/[Aa]ssets/[Pp]lugins/Demigiant*
+/[Aa]ssets/Resources/DOTween*
+
 # Visual Studio cache directory
 .vs/
 

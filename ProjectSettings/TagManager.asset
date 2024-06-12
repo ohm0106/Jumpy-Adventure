@@ -8,17 +8,17 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Tree
+  - Shrub
+  - House
+  - Ladder
+  - Stair
+  - SpiderWeb
+  - Star
   - 
   - 
   - 
