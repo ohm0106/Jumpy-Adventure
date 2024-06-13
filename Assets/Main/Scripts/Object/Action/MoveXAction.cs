@@ -1,21 +1,22 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-public class MoveYAction : ObjectAction
+
+public class MoveXAction : ObjectAction
 {
     [SerializeField]
-    float degreeY = 5f;
+    float degreeX = 5f;
     [SerializeField]
     float delay = 3f;
 
     public override IEnumerator CoAction()
     {
-        float Y = transform.position.y;
+       
         while (isAction)
         {
-            gameObject.transform.DOLocalMoveY(Y + degreeY, delay);
+            gameObject.transform.DOLocalMoveX( degreeX, delay);
             yield return new WaitForSeconds(delay);
-            gameObject.transform.DOLocalMoveY(Y - degreeY, delay);
+            gameObject.transform.DOLocalMoveX( -degreeX, delay);
             yield return new WaitForSeconds(delay);
         }
 

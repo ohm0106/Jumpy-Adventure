@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +22,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     PlayerActionType curActionType;
 
+    [SerializeField]
+    private float climbSpeed = 3.0f;
+
     [Header("[ 입력 및 이동 관련 여부 ]")]
     [SerializeField]
     Vector2 inputVec;
@@ -31,6 +36,9 @@ public class Player : MonoBehaviour
     bool isJump;
     [SerializeField]
     bool isJumping;
+    [SerializeField]
+    bool isClimbing;
+
     float verticalVelocity;
 
     [Header("[ ground ]")]
@@ -42,6 +50,16 @@ public class Player : MonoBehaviour
     [Header("[ Interact 오브젝트 레이아웃 ]")]
     PlayerActionInterface nearestInteractObj = null;
 
+    [Header("[ 기본 넉백 설정 ]")]
+    [SerializeField]
+    float knockbackForce = 5.0f;
+    [SerializeField]
+    float knockbackDuration = 0.5f;
+
+    private bool isKnockback;
+    private float knockbackEndTime;
+    private Vector3 knockbackDirection;
+
     void Awake()
     {
         curSpeed = speed;
@@ -52,34 +70,60 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        moveVec = cam.right * inputVec.x + cam.forward * inputVec.y;
-        moveVec.y = 0;
+        if (isKnockback)
+            return;
 
-        if (moveVec.magnitude > 0)
+        if (isClimbing)
         {
-            Quaternion dirQuat = Quaternion.LookRotation(moveVec);
-            Quaternion nextQuat = Quaternion.Slerp(transform.rotation, dirQuat, 0.3f);
-            transform.rotation = nextQuat;
+            float horizontal = inputVec.x;
+            float vertical = inputVec.y;
 
-          /*  if (!CanMoveForward(moveVec) && !isJumping)
-            {
-                moveVec = Vector3.zero;
-            }*/
+            moveVec = cam.right * horizontal;
+            moveVec.y = vertical;
+
         }
+        else
+        {
+            moveVec = cam.right * inputVec.x + cam.forward * inputVec.y;
+            moveVec.y = 0;
+
+            if (moveVec.magnitude > 0)
+            {
+                Quaternion dirQuat = Quaternion.LookRotation(moveVec);
+                Quaternion nextQuat = Quaternion.Slerp(transform.rotation, dirQuat, 0.3f);
+                transform.rotation = nextQuat;
+            }
+        }
+
+        
 
         // 점프 처리
         if (controller.isGrounded && isJump && !isJumping)
         {
             isJumping = true;
             verticalVelocity = jumpPower;
+            anim.SetTrigger("doJump");
         }
-
-
     }
 
     void FixedUpdate()
     {
-        if (controller.isGrounded)
+        // 넉백
+        if (isKnockback)
+        {
+            if (Time.time > knockbackEndTime)
+            {
+                isKnockback = false;
+                moveVec = Vector3.zero;
+            }
+            else
+            {
+                moveVec = knockbackDirection * knockbackForce;
+            }
+        }
+
+        // 중력
+        if (controller.isGrounded || isClimbing)
         {
             if (verticalVelocity < 0)
             {
@@ -90,9 +134,10 @@ public class Player : MonoBehaviour
         else
         {
             verticalVelocity += Physics.gravity.y * Time.fixedDeltaTime;
+            moveVec.y = verticalVelocity;
         }
 
-        moveVec.y = verticalVelocity;
+      
         controller.Move(moveVec * curSpeed * Time.fixedDeltaTime);
     }
 
@@ -114,21 +159,21 @@ public class Player : MonoBehaviour
         nearestInteractObj = playerActionInterface;
     }
 
-    void Interact(InteractionObjectType t) // TODO : 상호작용 오브젝트 type 으로 변경 할 것. 
+    void Interact(InteractionObjectType t)
     {
+        nearestInteractObj.ClickPerformAction();
+
         switch (t)
         {
             
         }
-
     }
 
     void Dead()
     {
         // 플레이어가 죽는 순간 
-        // hp = 0 일때 
+        anim.SetTrigger("doDeath");
     }
-
 
     public void Damage(int num)
     {
@@ -136,7 +181,30 @@ public class Player : MonoBehaviour
         // TODO : 데미지 액션
 
         if (hp <= 0)
+        {
+            hp = 0;
             Dead();
+        }
+        else
+        {
+            anim.SetTrigger("doDamage");
+        }
+    }
+
+    void ApplyKnockback(Vector3 direction, float knockbackF, float delay)
+    {
+        knockbackForce = knockbackF;
+        knockbackDuration = delay;
+        isKnockback = true;
+        knockbackEndTime = Time.time + knockbackDuration;
+        knockbackDirection = direction.normalized;
+    }
+
+    void ApplyKnockback(Vector3 direction)
+    {
+        isKnockback = true;
+        knockbackEndTime = Time.time + knockbackDuration;
+        knockbackDirection = direction.normalized;
     }
 
     #region 스피드 관련 함수
@@ -153,14 +221,65 @@ public class Player : MonoBehaviour
     public void ResetSpeed()
     {
         curSpeed = speed;
-    } 
+    }
+    #endregion
 
+    #region Trigger 이벤트 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Spider Web"))
+        {
+            SlowSpeed(3f);
+        }
+        else if (other.CompareTag("Water"))
+        {
+            Damage(100);
+        }
+        else if (other.CompareTag("DamageTrab"))
+        {
+            Vector3 knockbackDirection = (transform.position - other.transform.position).normalized;
+            ApplyKnockback(knockbackDirection);
+            Damage(5);
+        }else if (other.CompareTag("Ladder"))
+        {
+            isClimbing = true;
+            Quaternion dirQuat = Quaternion.LookRotation(other.transform.position);
+            transform.rotation = dirQuat;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Spider Web"))
+        {
+            ResetSpeed();
+        }else if (other.CompareTag("Ladder"))
+        {
+            isClimbing = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag =="BulletA")
+        {
+            Vector3 knockbackDirection = (transform.position - collision.transform.position).normalized;
+            ApplyKnockback(knockbackDirection);
+            Damage(20);
+        }
+    }
     #endregion
 
     #region 입력 이벤트 함수 
     public void ActionMove(InputAction.CallbackContext context)
     {
         inputVec = context.ReadValue<Vector2>();
+
+        if (inputVec.x == 0 && inputVec.y == 0)
+            anim.SetBool("isWalk", false);
+        else
+            anim.SetBool("isWalk", true);
     }
 
     public void ActionInteractive(InputAction.CallbackContext context)
@@ -169,6 +288,7 @@ public class Player : MonoBehaviour
         {
             isInteracting = true;
             Interact(nearestInteractObj.SetPlayerInteraction());
+            Debug.Log("CLICK");
         }
     }
 
@@ -189,6 +309,4 @@ public class Player : MonoBehaviour
     {
         return curActionType;
     }
-
-
 }
