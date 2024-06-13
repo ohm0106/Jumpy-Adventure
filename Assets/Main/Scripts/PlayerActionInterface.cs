@@ -1,9 +1,13 @@
 
+using UnityEngine;
+
 public interface PlayerActionInterface
 {
-    void PerformAction(Player player);
-
-    void ReleaseAction();
-
+    Renderer GetRenderer();
+    void AroundPerformAction();
+    void ClickPerformAction();
+    void ReleaseAroundPerformAction();
+    void ReleaseClickPerformAction();
     InteractionObjectType SetPlayerInteraction();
+
 }

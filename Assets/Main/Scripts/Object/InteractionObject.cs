@@ -2,9 +2,11 @@ using UnityEngine;
 
 public enum InteractionObjectType
 {
+    NONE,
     STAR,
     HOUSE,
-    SPIDERWEB
+    NPC,
+    Ladder
 }
 
 
@@ -12,10 +14,17 @@ public class InteractionObject : MonoBehaviour, PlayerActionInterface
 {
     [SerializeField]
     float interactionDistance = 1.5f;
-    bool isInteraction;
+    bool isAround;
 
+    [Header("[ 조건 없이 Action ]")]
     [SerializeField]
-    ObjectAction action;
+    ObjectAction alwaysAction; // 사용자 가까이 올 시 
+    [Header("[ 근처 가까이 올 시 Action ]")]
+    [SerializeField]
+    ObjectAction distanceAction; // 사용자 가까이 올 시 
+    [Header("[ Player 상호작용시 Action ]")]
+    [SerializeField]
+    ObjectAction clickAction; // 사용자 클릭 시 
 
     Player player;
     [SerializeField]
@@ -24,6 +33,9 @@ public class InteractionObject : MonoBehaviour, PlayerActionInterface
     void Start()
     {
         player = FindObjectOfType<Player>(); // [Todo] : 나중에 변경할 것. 
+
+        if(alwaysAction)
+            alwaysAction.StartAction();
     }
 
     void Update()
@@ -40,36 +52,58 @@ public class InteractionObject : MonoBehaviour, PlayerActionInterface
         }
 
         float distance = Vector3.Distance(player.transform.position, transform.position);
-        if (distance <= interactionDistance)
+        if (distance <= interactionDistance && !isAround)
         {
-            PerformAction(player);
+            AroundPerformAction();
         }
-        else
+        else if(distance > interactionDistance && isAround)
         {
-            ReleaseAction();
+            ReleaseAroundPerformAction();
         }
     }
 
     #region PlayerActionInterface
-    public void PerformAction(Player player)
+    public Renderer GetRenderer()
     {
-        isInteraction = true;
+        return transform.GetComponent<Renderer>();
+    }
+    public void AroundPerformAction()
+    {
+        isAround = true;
         player.SetInteract(this);
         Debug.Log("Player interacted with object.");
 
-        if(action)
-            action.StartAction();
+        if(distanceAction)
+            distanceAction.StartAction();
     }
 
-    public void ReleaseAction()
+    public void ClickPerformAction()
     {
-        isInteraction = false;
+        if (clickAction)
+        {
+            clickAction.StartAction();
+        }
+
+    }
+
+    public void ReleaseAroundPerformAction()
+    {
+        isAround = false;
         player.SetInteract(null);
-        Debug.Log("Interaction Release.");
+        Debug.Log("ReleaseAroundPerform Release.");
 
-        if (action)
-            action.ReleaseAction();
+        if (distanceAction)
+            distanceAction.ReleaseAction();
 
+    }
+
+    public void ReleaseClickPerformAction()
+    {
+
+        Debug.Log("ReleaseClickPerform Release.");
+
+        if (clickAction)
+            clickAction.ReleaseAction();
     }
 
     public InteractionObjectType SetPlayerInteraction()
