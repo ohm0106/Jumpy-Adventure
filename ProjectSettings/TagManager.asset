@@ -9,11 +9,12 @@ TagManager:
   - DamageTrab
   - Ladder
   - BulletA
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Wall
+  - Player
   - Water
   - UI
   - Ground

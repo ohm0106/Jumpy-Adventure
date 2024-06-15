@@ -8,3 +8,14 @@ public enum ItemType
     KEY
 }
 
+public class Item : MonoBehaviour
+{
+
+    ItemType type;
+
+
+    
+
+
+
+}

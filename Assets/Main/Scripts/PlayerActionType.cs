@@ -7,5 +7,6 @@ public enum PlayerActionType
     TALK,
     DAMAGE,
     BURN,
-    DEAD
+    DEAD,
+    Walk
 }

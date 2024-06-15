@@ -6,6 +6,7 @@ using System;
 
 public class Player : MonoBehaviour
 {
+    PlayerEvent eventController;
     CharacterController controller;
     Animator anim;
     Transform cam;
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         cam = Camera.main.transform;
+        eventController = GetComponent<PlayerEvent>();
 
     }
 
@@ -174,6 +176,7 @@ public class Player : MonoBehaviour
             
         }
     }
+
     #region 데미지 관련 ( 넉백, 데미지, 데스 ) 
    
     void Dead()
@@ -291,9 +294,17 @@ public class Player : MonoBehaviour
         inputVec = context.ReadValue<Vector2>();
 
         if (inputVec.x == 0 && inputVec.y == 0)
+        {
             anim.SetBool("isWalk", false);
+            
+        }
         else
+        {
             anim.SetBool("isWalk", true);
+            eventController.StartEffect(EffectType.WALK);
+            //eventController.StopEffect(EffectType.WALK);
+        }
+            
     }
 
     public void ActionInteractive(InputAction.CallbackContext context)
