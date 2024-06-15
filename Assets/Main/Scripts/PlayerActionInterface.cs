@@ -1,9 +1,8 @@
 
 using UnityEngine;
 
-public interface PlayerActionInterface
+public interface IPlayerAction
 {
-    Renderer GetRenderer();
     void AroundPerformAction();
     void ClickPerformAction();
     void ReleaseAroundPerformAction();

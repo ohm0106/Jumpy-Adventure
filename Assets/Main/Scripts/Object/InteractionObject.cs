@@ -10,7 +10,7 @@ public enum InteractionObjectType
 }
 
 
-public class InteractionObject : MonoBehaviour, PlayerActionInterface
+public class InteractionObject : MonoBehaviour, IPlayerAction
 {
     [SerializeField]
     float interactionDistance = 1.5f;
@@ -63,10 +63,6 @@ public class InteractionObject : MonoBehaviour, PlayerActionInterface
     }
 
     #region PlayerActionInterface
-    public Renderer GetRenderer()
-    {
-        return transform.GetComponent<Renderer>();
-    }
     public void AroundPerformAction()
     {
         isAround = true;

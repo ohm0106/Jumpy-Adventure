@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using DG.Tweening;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour
     LayerMask groundLayer;
 
     [Header("[ Interact 오브젝트 레이아웃 ]")]
-    PlayerActionInterface nearestInteractObj = null;
+    IPlayerAction nearestInteractObj = null;
 
     [Header("[ 기본 넉백 설정 ]")]
     [SerializeField]
@@ -60,17 +61,23 @@ public class Player : MonoBehaviour
     private float knockbackEndTime;
     private Vector3 knockbackDirection;
 
+    // Player Action 
+
     void Awake()
     {
         curSpeed = speed;
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         cam = Camera.main.transform;
+
     }
 
     void Update()
     {
         if (isKnockback)
+            return;
+
+        if (hp == 0)
             return;
 
         if (isClimbing)
@@ -96,7 +103,6 @@ public class Player : MonoBehaviour
         }
 
         
-
         // 점프 처리
         if (controller.isGrounded && isJump && !isJumping)
         {
@@ -154,7 +160,7 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public void SetInteract(PlayerActionInterface playerActionInterface)
+    public void SetInteract(IPlayerAction playerActionInterface)
     {
         nearestInteractObj = playerActionInterface;
     }
@@ -168,7 +174,8 @@ public class Player : MonoBehaviour
             
         }
     }
-
+    #region 데미지 관련 ( 넉백, 데미지, 데스 ) 
+   
     void Dead()
     {
         // 플레이어가 죽는 순간 
@@ -191,8 +198,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    void ApplyKnockback(Vector3 direction, float knockbackF, float delay)
+    public void ApplyKnockback(Vector3 direction, float knockbackF, float delay)
     {
+        // Debug
+        Debug.DrawRay(transform.position, direction * 10, Color.red, 2.0f);
+
         knockbackForce = knockbackF;
         knockbackDuration = delay;
         isKnockback = true;
@@ -200,20 +210,25 @@ public class Player : MonoBehaviour
         knockbackDirection = direction.normalized;
     }
 
-    void ApplyKnockback(Vector3 direction)
+    public void ApplyKnockback(Vector3 direction)
     {
+        // Debug
+        Debug.DrawRay(transform.position, direction * 10, Color.red, 2.0f);
+
         isKnockback = true;
         knockbackEndTime = Time.time + knockbackDuration;
         knockbackDirection = direction.normalized;
     }
+    #endregion
 
     #region 스피드 관련 함수
+
     public void SlowSpeed(float degree)
     {
         curSpeed -= degree;
     }
 
-    public void FastSpeed(float degree)
+    void FastSpeed(float degree)
     {
         curSpeed += degree;
     }
@@ -227,48 +242,47 @@ public class Player : MonoBehaviour
     #region Trigger 이벤트 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Spider Web"))
+        IPlayerTrigger interactable = other.GetComponent<IPlayerTrigger>();
+        if (interactable != null)
         {
-            SlowSpeed(3f);
-        }
-        else if (other.CompareTag("Water"))
-        {
-            Damage(100);
-        }
-        else if (other.CompareTag("DamageTrab"))
-        {
-            Vector3 knockbackDirection = (transform.position - other.transform.position).normalized;
-            ApplyKnockback(knockbackDirection);
-            Damage(5);
-        }else if (other.CompareTag("Ladder"))
-        {
-            isClimbing = true;
-            Quaternion dirQuat = Quaternion.LookRotation(other.transform.position);
-            transform.rotation = dirQuat;
+            interactable.OnPlayerEnter(this);
         }
 
     }
-
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Spider Web"))
+        IPlayerTrigger interactable = other.GetComponent<IPlayerTrigger>();
+        if (interactable != null)
         {
-            ResetSpeed();
-        }else if (other.CompareTag("Ladder"))
-        {
-            isClimbing = false;
+            interactable.OnPlayerExit(this);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag =="BulletA")
+        IPlayerTrigger interactable = collision.transform.GetComponent<IPlayerTrigger>();
+        if (interactable != null)
         {
-            Vector3 knockbackDirection = (transform.position - collision.transform.position).normalized;
-            ApplyKnockback(knockbackDirection);
-            Damage(20);
+            interactable.OnPlayerEnter(this);
         }
+
     }
+
+    #endregion
+
+    #region 사다리 타기 
+    public void SetClimbing(Vector3 pos)
+    {
+        isClimbing = true;
+        Quaternion dirQuat = Quaternion.LookRotation(pos);
+        transform.rotation = dirQuat;
+    }
+
+    public void ReleseClimbing()
+    {
+        isClimbing = false;
+    }
+
     #endregion
 
     #region 입력 이벤트 함수 

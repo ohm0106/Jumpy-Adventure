@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-public class StarClickAction : ObjectAction
+public class ItemClickAction : ObjectAction
 {
     [SerializeField]
     float delay = 1f;
