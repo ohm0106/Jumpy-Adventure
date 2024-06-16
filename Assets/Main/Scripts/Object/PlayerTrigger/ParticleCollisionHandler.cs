@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class ParticleCollisionHandler : MonoBehaviour
 {
-   
+    [SerializeField]
+    int damage = 10;
     
     void OnParticleCollision(GameObject other)
     {
@@ -17,6 +18,7 @@ public class ParticleCollisionHandler : MonoBehaviour
 
     private void HandlePlayerCollision(Player player)
     {
-        player.Damage(10);
+        player.Damage(damage);
+        player.OnFire();
     }
 }

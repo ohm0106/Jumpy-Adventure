@@ -27,6 +27,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float climbSpeed = 3.0f;
 
+    [SerializeField]
+    bool isInvulnerablilty = false;
+
+    [SerializeField]
+    float invulnerabliltyDelay = 0.8f;
+
+
     [Header("[ 입력 및 이동 관련 여부 ]")]
     [SerializeField]
     Vector2 inputVec;
@@ -187,6 +194,9 @@ public class Player : MonoBehaviour
 
     public void Damage(int num)
     {
+        if (isInvulnerablilty)
+            return;
+
         hp -= num;
         // TODO : 데미지 액션
 
@@ -203,8 +213,10 @@ public class Player : MonoBehaviour
 
     public void ApplyKnockback(Vector3 direction, float knockbackF, float delay)
     {
-        // Debug
-        Debug.DrawRay(transform.position, direction * 10, Color.red, 2.0f);
+        if (isInvulnerablilty)
+            return;
+
+        //Debug.DrawRay(transform.position, direction * 10, Color.red, 2.0f);
 
         knockbackForce = knockbackF;
         knockbackDuration = delay;
@@ -215,13 +227,33 @@ public class Player : MonoBehaviour
 
     public void ApplyKnockback(Vector3 direction)
     {
-        // Debug
-        Debug.DrawRay(transform.position, direction * 10, Color.red, 2.0f);
+        if (isInvulnerablilty)
+            return;
+
+        //Debug.DrawRay(transform.position, direction * 10, Color.red, 2.0f);
 
         isKnockback = true;
         knockbackEndTime = Time.time + knockbackDuration;
         knockbackDirection = direction.normalized;
     }
+
+    public void OnFire()
+    {
+        if(!isInvulnerablilty)
+            StartCoroutine(CoFire());
+    }
+
+    IEnumerator CoFire()
+    {
+        isJump = true;
+        isInvulnerablilty = true;
+        yield return new WaitForSeconds(0.02f);
+        isJump = false;
+        yield return new WaitForSeconds(invulnerabliltyDelay);
+      
+        isInvulnerablilty = false;
+    }
+
     #endregion
 
     #region 스피드 관련 함수
