@@ -13,9 +13,9 @@ public class MoveYAction : ObjectAction
         float Y = transform.position.y;
         while (isAction)
         {
-            gameObject.transform.DOLocalMoveY(Y + degreeY, delay);
+            gameObject.transform.DOMoveY(Y + degreeY, delay);
             yield return new WaitForSeconds(delay);
-            gameObject.transform.DOLocalMoveY(Y - degreeY, delay);
+            gameObject.transform.DOMoveY(Y - degreeY, delay);
             yield return new WaitForSeconds(delay);
         }
 

@@ -18,13 +18,13 @@ public class InteractionObject : MonoBehaviour, IPlayerAction
 
     [Header("[ 조건 없이 Action ]")]
     [SerializeField]
-    ObjectAction alwaysAction; // 사용자 가까이 올 시 
+    ObjectAction alwaysAction; 
     [Header("[ 근처 가까이 올 시 Action ]")]
     [SerializeField]
-    ObjectAction distanceAction; // 사용자 가까이 올 시 
+    ObjectAction distanceAction; 
     [Header("[ Player 상호작용시 Action ]")]
     [SerializeField]
-    ObjectAction clickAction; // 사용자 클릭 시 
+    ObjectAction clickAction; 
 
     Player player;
     [SerializeField]
@@ -65,10 +65,10 @@ public class InteractionObject : MonoBehaviour, IPlayerAction
     #region PlayerActionInterface
     public void AroundPerformAction()
     {
-        isAround = true;
-        player.SetInteract(this);
-        Debug.Log("Player interacted with object.");
+        if (clickAction)
+            player.SetInteract(this);
 
+        isAround = true;
         if(distanceAction)
             distanceAction.StartAction();
     }
@@ -86,7 +86,6 @@ public class InteractionObject : MonoBehaviour, IPlayerAction
     {
         isAround = false;
         player.SetInteract(null);
-        Debug.Log("ReleaseAroundPerform Release.");
 
         if (distanceAction)
             distanceAction.ReleaseAction();
@@ -95,9 +94,6 @@ public class InteractionObject : MonoBehaviour, IPlayerAction
 
     public void ReleaseClickPerformAction()
     {
-
-        Debug.Log("ReleaseClickPerform Release.");
-
         if (clickAction)
             clickAction.ReleaseAction();
     }

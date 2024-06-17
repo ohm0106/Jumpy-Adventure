@@ -360,7 +360,8 @@ public class Player : MonoBehaviour
             isInteracting = true;
             Interact(nearestInteractObj.SetPlayerInteraction());
             Debug.Log("CLICK");
-        }
+            anim.SetTrigger("doInteraction");
+        }    
     }
 
     public void ActionJump(InputAction.CallbackContext context)
