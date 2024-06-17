@@ -207,6 +207,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            SetInvulerablility();
             anim.SetTrigger("doDamage");
         }
     }
@@ -235,6 +236,19 @@ public class Player : MonoBehaviour
         isKnockback = true;
         knockbackEndTime = Time.time + knockbackDuration;
         knockbackDirection = direction.normalized;
+    }
+
+    void SetInvulerablility()
+    {
+        if (!isInvulnerablilty)
+            CoSetInvulerablility();
+    }
+
+    IEnumerator CoSetInvulerablility()
+    {
+        isInvulnerablilty = true;
+        yield return new WaitForSeconds(invulnerabliltyDelay);
+        isInvulnerablilty = false;
     }
 
     public void OnFire()
