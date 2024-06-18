@@ -12981,8 +12981,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617cc8a97b5fa9d48a5ac16dc4fb3432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: -7, y: 3, z: 0}
-  smoothSpeed: 0.001
+  offset: {x: -12, y: 6, z: 0}
+  smoothSpeed: 0.01
 --- !u!1001 &732888604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17723,6 +17723,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1170846500503772331, guid: 3aa75342e4c9ec9449d02013a262bfc2, type: 3}
+      propertyPath: teleportPosition
+      value: 
+      objectReference: {fileID: 1765543482}
     - target: {fileID: 3426154390035926841, guid: 3aa75342e4c9ec9449d02013a262bfc2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.73973
@@ -20486,6 +20490,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1170846500503772331, guid: 3aa75342e4c9ec9449d02013a262bfc2, type: 3}
+      propertyPath: teleportPosition
+      value: 
+      objectReference: {fileID: 1639971316}
     - target: {fileID: 3426154390035926841, guid: 3aa75342e4c9ec9449d02013a262bfc2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 54.81
@@ -29233,6 +29241,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 407958, guid: 7bf82b365baf0433cb623111bfcd60ba, type: 3}
   m_PrefabInstance: {fileID: 69718863}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1639971316 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3426154390035926841, guid: 3aa75342e4c9ec9449d02013a262bfc2, type: 3}
+  m_PrefabInstance: {fileID: 981067166}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1645958716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31303,6 +31316,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4210811200470876, guid: 571fddfa4a0c30543815e196fbf20d4b, type: 3}
   m_PrefabInstance: {fileID: 1763071544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1765543482 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3426154390035926841, guid: 3aa75342e4c9ec9449d02013a262bfc2, type: 3}
+  m_PrefabInstance: {fileID: 1136009605}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1783846491
 PrefabInstance:

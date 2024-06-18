@@ -9,6 +9,8 @@ public class PlayerEvent : MonoBehaviour
 
     public event Action<EffectType> OnStopEffect;
 
+    public event Action<bool> OnMovePlayer;
+
     public void SetItem(ItemType t)
     {
         OnSetItem?.Invoke(t);
@@ -24,4 +26,8 @@ public class PlayerEvent : MonoBehaviour
         OnStartEffect?.Invoke(effect);
     }
 
+    public void SetMovePlayer(bool isMove)
+    {
+        OnMovePlayer?.Invoke(isMove);
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObjectAction : MonoBehaviour
 {
     protected bool isAction;
-    public void StartAction()
+    public virtual void StartAction()
     {
         if (!isAction)
         {
@@ -30,7 +30,7 @@ public class ObjectAction : MonoBehaviour
         yield return null;
     }
 
-    public void ReleaseAction()
+    public virtual void ReleaseAction()
     {
         if (isAction)
             isAction = false;

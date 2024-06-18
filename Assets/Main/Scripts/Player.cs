@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
     bool isJumping;
     [SerializeField]
     bool isClimbing;
+    [SerializeField]
+    bool isMove;
 
     float verticalVelocity;
 
@@ -78,11 +80,23 @@ public class Player : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         cam = Camera.main.transform;
         eventController = GetComponent<PlayerEvent>();
-
+        isMove = true;
     }
 
+    void OnEnable()
+    {
+        eventController.OnMovePlayer += SetMove;
+    }
+    void OnDisable()
+    {
+        eventController.OnMovePlayer -= SetMove;
+    }
     void Update()
     {
+
+        if (isMove == false)
+            return;
+
         if (isKnockback)
             return;
 
@@ -123,6 +137,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isMove == false)
+            return;
+
         // ³Ë¹é
         if (isKnockback)
         {
@@ -154,6 +171,11 @@ public class Player : MonoBehaviour
 
       
         controller.Move(moveVec * curSpeed * Time.fixedDeltaTime);
+    }
+
+    void SetMove(bool isMove)
+    {
+        this.isMove = isMove;
     }
 
     bool CanMoveForward(Vector3 moveDirection)
