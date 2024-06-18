@@ -14,6 +14,17 @@ public class ObjectAction : MonoBehaviour
         }
         
     }
+    public Coroutine StartActionReturn()
+    {
+        if (!isAction)
+        {
+            isAction = true;
+           return  StartCoroutine(CoAction());
+
+        }
+        return null;
+    }
+
     public virtual IEnumerator CoAction()
     {
         yield return null;

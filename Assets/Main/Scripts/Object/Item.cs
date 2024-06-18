@@ -5,7 +5,8 @@ public enum ItemType
 {
     NONE,
     STAR,
-    KEY
+    KEY,
+    APPLE
 }
 
 public class Item : MonoBehaviour
