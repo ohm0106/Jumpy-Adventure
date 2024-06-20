@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48c2f450d7a9fa42907393b44db413f, type: 3}
+  m_Name: Stage1_1
+  m_EditorClassIdentifier: 
+  missionName: Stage01_1
+  conversions:
+  - npcConversation:
+    - "\uD751,,\uD751,,\uBC30\uACE0\uD30C,,,"
+    playerConversation:
+    - "(\uC8FC\uBCC0\uC5D0 \uBA39\uC744 \uAC83\uC774 \uC5C6\uB098 \uCC3E\uC544\uBCF4\uC790..!)"
+  isCompleted: 0

@@ -199,11 +199,11 @@ public class Player : MonoBehaviour
     void Interact(InteractionObjectType t)
     {
         nearestInteractObj.ClickPerformAction();
-
+/*
         switch (t)
         {
             
-        }
+        }*/
     }
 
     #region 데미지 관련 ( 넉백, 데미지, 데스 ) 

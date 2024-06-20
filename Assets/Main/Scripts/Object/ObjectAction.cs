@@ -4,6 +4,14 @@ using UnityEngine;
 public class ObjectAction : MonoBehaviour
 {
     protected bool isAction;
+
+    protected virtual void Start()
+    {
+
+
+
+    }
+
     public virtual void StartAction()
     {
         if (!isAction)

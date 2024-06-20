@@ -11,6 +11,8 @@ public class PlayerEvent : MonoBehaviour
 
     public event Action<bool> OnMovePlayer;
 
+    // 상호작용 시 다른 상호작용 오브젝트들 멈춰야 할듯? 
+
     public void SetItem(ItemType t)
     {
         OnSetItem?.Invoke(t);
@@ -29,5 +31,10 @@ public class PlayerEvent : MonoBehaviour
     public void SetMovePlayer(bool isMove)
     {
         OnMovePlayer?.Invoke(isMove);
+    }
+
+    public void SetInterativeState(bool isInteractive)
+    {
+
     }
 }

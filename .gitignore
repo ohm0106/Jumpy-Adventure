@@ -32,6 +32,9 @@
 /[Aa]ssets/[Pp]lugins/Demigiant*
 /[Aa]ssets/Resources/DOTween*
 
+# Ignore TextMesh Pro
+/[Aa]ssets/TextMesh Pro/
+
 # Visual Studio cache directory
 .vs/
 
