@@ -12,7 +12,10 @@ public class EnemyDefeatCondition : ScriptableObject, MissionCondition
     {
         return currentDefeatCount >= requiredDefeatCount;
     }
-
+    public void SetItemCurrentSet(int degree)
+    {
+        currentDefeatCount += degree;
+    }
     public void DefeatEnemy(string type)
     {
         if (type == enemyType)

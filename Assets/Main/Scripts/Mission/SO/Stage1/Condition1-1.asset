@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Condition1-1
   m_EditorClassIdentifier: 
   requiredItemName: 3
-  requiredAmount: 5
+  requiredAmount: 1

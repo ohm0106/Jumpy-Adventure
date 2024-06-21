@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48c2f450d7a9fa42907393b44db413f, type: 3}
   m_Name: Stage1_1
   m_EditorClassIdentifier: 
-  missionName: Stage01_1
+  missionName: "\uC8FC\uBCC0\uC5D0 \uBA39\uC744\uAC8C \uC788\uB294\uC9C0 \uCC3E\uC544\uBCF4\uC790!"
   conversions:
-  - npcConversation:
-    - "\uD751,,\uD751,,\uBC30\uACE0\uD30C,,,"
-    playerConversation:
-    - "(\uC8FC\uBCC0\uC5D0 \uBA39\uC744 \uAC83\uC774 \uC5C6\uB098 \uCC3E\uC544\uBCF4\uC790..!)"
+  - name: "\uC544\uAE30 \uB178\uB8E8"
+    talk: "\uD751,,,\uD751,,,\uD751,,, \uBC30\uACE0\uD30C,,, "
+  - name: "\uB098"
+    talk: "(\uC8FC\uBCC0\uC5D0 \uBA39\uC744\uB9CC\uD55C \uAC8C \uC788\uB294\uC9C0
+      \uCC3E\uC544\uBCF4\uC790)"
   isCompleted: 0

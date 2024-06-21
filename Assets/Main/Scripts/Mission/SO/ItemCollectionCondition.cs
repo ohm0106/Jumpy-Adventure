@@ -12,7 +12,11 @@ public class ItemCollectionCondition : ScriptableObject, MissionCondition
     {
         return currentAmount >= requiredAmount;
     }
+    public void SetItemCurrentSet(int degree)
+    {
 
+        currentAmount += degree;
+    }
     public void CollectItem(ItemType itemName, int amount)
     {
         if (itemName == requiredItemName)

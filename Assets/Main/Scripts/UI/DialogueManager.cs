@@ -11,25 +11,34 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     TMP_Text dialogueText;
     [SerializeField]
+    TMP_Text nameText;
+    [SerializeField]
     Button skipBtn;
 
-    private Queue<string> sentences;
+    bool isDialogue;
+   
+    private Queue<Conversation> conversationQ;
 
     private void Start()
     {
-        sentences = new Queue<string>();
+        conversationQ = new Queue<Conversation>();
         skipBtn.onClick.AddListener(DisplayNextSentence);
+        EndDialogue();
     }
 
-    public void StartDialogue(string[] dialogueSentence)
+    public void StartDialogue(Conversation[] conversations)
     {
+        if (isDialogue)
+            return;
+        isDialogue = true;
+
         dialogueObj.SetActive(true);
 
-        sentences.Clear();
+        conversationQ.Clear();
 
-        foreach(string sentence in dialogueSentence)
+        foreach(var conversation in conversations)
         {
-            sentences.Enqueue(sentence);
+            conversationQ.Enqueue(conversation);
         }
 
         DisplayNextSentence();
@@ -38,21 +47,22 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
-        if (sentences.Count == 0)
+        if (conversationQ.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        string sentence = sentences.Dequeue();
+        Conversation conversation = conversationQ.Dequeue();
         StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentence));
+        StartCoroutine(TypeSentence(conversation));
     }
 
-    IEnumerator TypeSentence(string sentence)
+    IEnumerator TypeSentence(Conversation conversation)
     {
         dialogueText.text = "";
-        foreach (char letter in sentence.ToCharArray())
+        nameText.text = conversation.name;
+        foreach (char letter in conversation.talk.ToCharArray())
         {
             dialogueText.text += letter;
             yield return null;
@@ -61,7 +71,14 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        nameText.text = "";
         dialogueText.text = "";
         dialogueObj.SetActive(false);
+        isDialogue = false;
+    }
+
+   public bool GetIsDialogue()
+    {
+        return isDialogue;
     }
 }
