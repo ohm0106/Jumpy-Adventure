@@ -1,12 +1,23 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewMission", menuName = "Mission")]
-public class Mission : ScriptableObject
+[CreateAssetMenu(fileName = "NewMissionItem", menuName = "Mission/MissionItem")]
+public class MissionItem : ScriptableObject
 {
     public string missionName;
     public Conversation[] conversions;
+    public Conversation[] completeConversations;
     public bool isCompleted;
-    public MissionCondition conditions;
+    public Condition<ItemType> condition;
+
+}
+[CreateAssetMenu(fileName = "NewMissionEnemy", menuName = "Mission/MissionEnemy")]
+public class MissionEnemy : ScriptableObject
+{
+    public string missionName;
+    public Conversation[] conversions;
+    public Conversation[] completeConversations;
+    public bool isCompleted;
+    public Condition<EnemyType> condition;
 
 }
 

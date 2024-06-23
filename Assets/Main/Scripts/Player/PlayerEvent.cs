@@ -13,7 +13,6 @@ public class PlayerEvent : MonoBehaviour
 
     public event Action<bool> OnMovePlayer;
 
-    // 상호작용 시 다른 상호작용 오브젝트들 멈춰야 할듯? 
 
     public void AddItem(ItemType t,int amount = 1)
     {

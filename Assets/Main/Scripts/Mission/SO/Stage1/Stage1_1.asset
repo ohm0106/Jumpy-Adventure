@@ -15,8 +15,13 @@ MonoBehaviour:
   missionName: "\uC8FC\uBCC0\uC5D0 \uBA39\uC744\uAC8C \uC788\uB294\uC9C0 \uCC3E\uC544\uBCF4\uC790!"
   conversions:
   - name: "\uC544\uAE30 \uB178\uB8E8"
-    talk: "\uD751,,,\uD751,,,\uD751,,, \uBC30\uACE0\uD30C,,, "
+    talk: "\uD750\uC5D0\uC5D0\uC5D0\uC5D0\uC5D0\uC5E5,,, \uBC30\uACE0\uD30C,,, "
   - name: "\uB098"
     talk: "(\uC8FC\uBCC0\uC5D0 \uBA39\uC744\uB9CC\uD55C \uAC8C \uC788\uB294\uC9C0
       \uCC3E\uC544\uBCF4\uC790)"
+  completeConversations:
+  - name: "\uC544\uAE30 \uB178\uB8E8"
+    talk: "\uD5C9...! \uC774\uAC74 \uC0AC\uACFC...? \uC800\uD55C\uD14C \uC8FC\uC2DC\uB294
+      \uAC74\uAC00\uC694? "
   isCompleted: 0
+  condition: {fileID: 11400000, guid: d06b5d0136f22b04a9474be01a895158, type: 2}

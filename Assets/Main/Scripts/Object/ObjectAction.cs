@@ -7,9 +7,6 @@ public class ObjectAction : MonoBehaviour
 
     protected virtual void Start()
     {
-
-
-
     }
 
     public virtual void StartAction()
