@@ -3,7 +3,9 @@ using System;
 
 public class PlayerEvent : MonoBehaviour
 {
-    public event Action<ItemType> OnSetItem;
+    public event Action<ItemType,int> OnAddItem;
+
+    public event Action<ItemType, int> OnDeleteItem;
 
     public event Action<EffectType> OnStartEffect;
 
@@ -13,10 +15,15 @@ public class PlayerEvent : MonoBehaviour
 
     // 상호작용 시 다른 상호작용 오브젝트들 멈춰야 할듯? 
 
-    public void SetItem(ItemType t)
+    public void AddItem(ItemType t,int amount = 1)
     {
-        OnSetItem?.Invoke(t);
+        OnAddItem?.Invoke(t,amount);
     }
+    public void DeleteItem(ItemType t, int amount = 1)
+    {
+        OnAddItem?.Invoke(t, amount);
+    }
+
 
     public void StartEffect(EffectType effect)
     {
