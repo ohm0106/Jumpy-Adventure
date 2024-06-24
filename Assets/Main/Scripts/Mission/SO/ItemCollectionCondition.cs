@@ -2,24 +2,19 @@ using UnityEngine;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "NewItemCollectionCondition", menuName = "MissionConditions/ItemCollection")]
-public class ItemCollectionCondition : ScriptableObject, MissionCondition
+public class ItemCollectionCondition : Condition<ItemType>
 {
-    public ItemType requiredItemName;
-    public int requiredAmount;
-    private int currentAmount;
-
-    public bool IsConditionMet()
+    [SerializeField]
+    ItemType requiredItemName;
+    
+    public override MissionType GetMissionType()
     {
-        return currentAmount >= requiredAmount;
+        return MissionType.ITEM;
     }
-    public void SetItemCurrentSet(int degree)
-    {
 
-        currentAmount += degree;
-    }
-    public void CollectItem(ItemType itemName, int amount)
+    public override void SetCurrent(ItemType value, int amount)
     {
-        if (itemName == requiredItemName)
+        if(requiredItemName == value)
         {
             currentAmount += amount;
         }

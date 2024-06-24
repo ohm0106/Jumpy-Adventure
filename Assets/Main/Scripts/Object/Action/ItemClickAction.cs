@@ -17,7 +17,7 @@ public class ItemClickAction : ObjectAction
     
     void SendItemType()
     {
-        FindAnyObjectByType<PlayerEvent>().SetItem(type);
+        FindAnyObjectByType<PlayerEvent>().AddItem(type);
     }
 
     public override IEnumerator CoAction()

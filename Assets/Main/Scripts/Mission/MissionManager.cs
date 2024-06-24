@@ -15,8 +15,12 @@ public class MissionManager : Singleton<MissionManager>
     [SerializeField]
     TMP_Text missionText;
 
+    [SerializeField]
     DialogueManager dialogueManager;
+    [SerializeField]
     UIToggleWindow uiToggleWindow;
+    [SerializeField]
+    MissionComplete missionComplete;
 
     [SerializeField]
     PlayerEvent eventP;// todo
@@ -25,8 +29,6 @@ public class MissionManager : Singleton<MissionManager>
     {
         subscribeItemMission = new Dictionary<string, MissionItem>();
         subscribeEnemyMission = new Dictionary<string, MissionEnemy>();
-        dialogueManager = FindAnyObjectByType<DialogueManager>();
-        uiToggleWindow = FindAnyObjectByType<UIToggleWindow>();
     }
 
     void OnEnable()
@@ -49,7 +51,7 @@ public class MissionManager : Singleton<MissionManager>
         {
             subscribeItemMission.Add(mission.missionName,mission);
             dialogueManager.StartDialogue(mission.conversions);
-            StartCoroutine(CoStartMission(mission.missionName));
+            StartCoroutine(CoStartMission(mission.detailName));
         }
 
         return true;
@@ -61,34 +63,37 @@ public class MissionManager : Singleton<MissionManager>
         {
             subscribeEnemyMission.Add(mission.missionName, mission);
             dialogueManager.StartDialogue(mission.conversions);
-            StartCoroutine(CoStartMission(mission.missionName));
+            StartCoroutine(CoStartMission(mission.detailName));
         }
 
         return true;
     }
 
-    private IEnumerator CoStartMission(string missionName)
+    private IEnumerator CoStartMission(string detailName)
     {
         yield return new WaitUntil(() => !dialogueManager.GetIsDialogue());
 
-        uiToggleWindow.UpdateWindowText(missionName);
+        uiToggleWindow.UpdateWindowText(detailName);
     }
 
     private IEnumerator CoStartComplete(string missionName)
     {
         yield return new WaitUntil(() => !dialogueManager.GetIsDialogue());
 
-        uiToggleWindow.UpdateWindowText(missionName);
+        missionComplete.StartEffect(missionName);
     }
 
-    public void CheckMissionComplete(string missionName)
+    public bool CheckMissionComplete(string missionName)
     {
         if(subscribeItemMission.ContainsKey(missionName)&&
            subscribeItemMission[missionName].condition.IsConditionMet())
         {
             dialogueManager.StartDialogue(subscribeItemMission[missionName].completeConversations);
+            StartCoroutine(CoStartComplete(missionName));
+            return true;
         }
 
+        return false;
         //todo : add Enemy Type
     }
 

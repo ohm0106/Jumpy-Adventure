@@ -2,25 +2,27 @@ using UnityEngine;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "NewEnemyDefeatCondition", menuName = "MissionConditions/EnemyDefeat")]
-public class EnemyDefeatCondition : ScriptableObject, MissionCondition
+public class EnemyDefeatCondition : Condition<EnemyType>
 {
-    public string enemyType; // todo 추후 에 적 타입이 확정되면 enum 으로 변경할 것. 
-    public int requiredDefeatCount;
-    private int currentDefeatCount;
+    [SerializeField]
+    EnemyType requirEnemyType;
 
-    public bool IsConditionMet()
+    public override MissionType GetMissionType()
     {
-        return currentDefeatCount >= requiredDefeatCount;
+        return MissionType.ENEMY;
     }
-    public void SetItemCurrentSet(int degree)
+
+    public override void SetCurrent(EnemyType value, int amount)
     {
-        currentDefeatCount += degree;
-    }
-    public void DefeatEnemy(string type)
-    {
-        if (type == enemyType)
+        if (requirEnemyType == value)
         {
-            currentDefeatCount++;
+            currentAmount += amount;
+
         }
     }
+}
+
+public enum EnemyType
+{
+    NONE
 }

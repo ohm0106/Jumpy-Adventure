@@ -14,6 +14,7 @@ public class PlayerInventory : MonoBehaviour
     }
     void OnEnable()
     {
+        pEvent = gameObject.GetComponent<PlayerEvent>();
         pEvent.OnAddItem += AddItem;
         pEvent.OnDeleteItem += DeleteItem;
     }

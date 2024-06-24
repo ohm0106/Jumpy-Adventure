@@ -2,23 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class UIToggleWindow : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform windowPanel; 
+    RectTransform windowPanel; 
     [SerializeField]
-    private TMP_Text windowText; 
+    TMP_Text windowText; 
     [SerializeField]
-    private Button toggleButton; 
+    Button toggleButton; 
 
-    private bool isExpanded = true;
-    private float expandedHeight;
-    private float collapsedHeight = 0f; 
+    bool isExpanded = true;
+    float expandedHeight;
+    float collapsedHeight = 0f;
+
+    List<string> missionText;
 
     void Start()
     {
         // √ ±‚»≠
+        missionText = new List<string>();
         expandedHeight = windowPanel.sizeDelta.y;
         toggleButton.onClick.AddListener(ToggleWindow);
 
@@ -26,7 +30,7 @@ public class UIToggleWindow : MonoBehaviour
             ToggleWindow();
     }
 
-    private void ToggleWindow()
+    void ToggleWindow()
     {
         if (isExpanded)
         {
@@ -50,6 +54,13 @@ public class UIToggleWindow : MonoBehaviour
     public void UpdateWindowText(string newText)
     {
         windowText.text = newText;
+        if (!isExpanded)
+            ToggleWindow();
+    }
+
+    public void DeleteWindowText(string alreadyText)
+    {
+
         if (!isExpanded)
             ToggleWindow();
     }

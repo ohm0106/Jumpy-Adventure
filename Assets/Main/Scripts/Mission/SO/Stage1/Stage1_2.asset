@@ -10,19 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b48c2f450d7a9fa42907393b44db413f, type: 3}
-  m_Name: Stage1_1
+  m_Name: Stage1_2
   m_EditorClassIdentifier: 
-  missionName: "\uCD08\uC2EC"
-  detailName: "\uC8FC\uBCC0\uC5D0 \uBA39\uC744\uAC8C \uC788\uB294\uC9C0 \uCC3E\uC544\uBCF4\uC790!"
+  missionName: "\uC0AC\uACFC \uCC3E\uAE30 \uB9C8\uC2A4\uD130 !"
+  detailName: "\uC544\uAE30\uB178\uB8E8\uC5D0\uAC8C \uC904 \uC0AC\uACFC\uB97C 5\uAC1C
+    \uCC3E\uC544\uBCF4\uC790"
   conversions:
   - name: "\uC544\uAE30 \uB178\uB8E8"
-    talk: "\uD750\uC5D0\uC5D0\uC5D0\uC5D0\uC5D0\uC5E5,,, \uBC30\uACE0\uD30C,,, "
+    talk: "\uC544\uC9C1\uB3C4 \uBC30\uAC00 \uACE0\uD30C\uC694.. \uC0AC\uACFC 5\uAC1C\uB97C
+      \uB354 \uCC3E\uC544\uC8FC\uC2E4 \uC218 \uC788\uC744\uAE4C\uC694? "
   - name: "\uB098"
-    talk: "(\uC8FC\uBCC0\uC5D0 \uBA39\uC744\uB9CC\uD55C \uAC8C \uC788\uB294\uC9C0
-      \uCC3E\uC544\uBCF4\uC790)"
+    talk: "\uADF8...\uADF8\uB798"
   completeConversations:
   - name: "\uC544\uAE30 \uB178\uB8E8"
     talk: "\uD5C9...! \uC774\uAC74 \uC0AC\uACFC...? \uC800\uD55C\uD14C \uC8FC\uC2DC\uB294
       \uAC74\uAC00\uC694? "
   isCompleted: 0
-  condition: {fileID: 11400000, guid: d06b5d0136f22b04a9474be01a895158, type: 2}
+  condition: {fileID: 11400000, guid: d178f1499c29e7a4b8abb6dedc079fa9, type: 2}

@@ -4,6 +4,7 @@ using UnityEngine;
 public class MissionItem : ScriptableObject
 {
     public string missionName;
+    public string detailName;
     public Conversation[] conversions;
     public Conversation[] completeConversations;
     public bool isCompleted;
@@ -14,6 +15,7 @@ public class MissionItem : ScriptableObject
 public class MissionEnemy : ScriptableObject
 {
     public string missionName;
+    public string detailName;
     public Conversation[] conversions;
     public Conversation[] completeConversations;
     public bool isCompleted;

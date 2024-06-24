@@ -26,6 +26,8 @@
 #게임 리소스 정리 
 /[Aa]ssets/GameResources/
 /[Aa]ssets/GameResources*
+/[Aa]ssets/Layer Lab/
+/[Aa]ssets/Layer Lab*
 
 # Ignore DG Tweening 
 /[Aa]ssets/[Pp]lugins/Demigiant/
