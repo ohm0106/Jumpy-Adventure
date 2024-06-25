@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     float speed = 1.5f;
     float curSpeed;
     int hp = 100;
+    int maxhp = 100;
 
     [SerializeField]
     float jumpPower = 1.0f;
@@ -212,6 +213,7 @@ public class Player : MonoBehaviour
     {
         // 플레이어가 죽는 순간 
         anim.SetTrigger("doDeath");
+        eventController.SetPlayerDead();
     }
 
     public void Damage(int num)
@@ -232,6 +234,7 @@ public class Player : MonoBehaviour
             SetInvulerablility();
             anim.SetTrigger("doDamage");
         }
+        eventController.GetCurrentPlayerHP(hp, maxhp);
     }
 
     public void ApplyKnockback(Vector3 direction, float knockbackF, float delay)

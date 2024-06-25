@@ -10,18 +10,15 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
     float smoothSpeed = 0.125f;
 
-    bool isMove;
-
     void Start()
     {
         player = FindAnyObjectByType<Player>().gameObject.transform; // Todo
-        isMove = true;
         transform.position = player.position + offset;
     }
 
     void OnEnable()
     {
-        FindAnyObjectByType<PlayerEvent>().OnMovePlayer += SetCameraMovePos; 
+        FindAnyObjectByType<PlayerEvent>().OnTeleportPlayer += SetCameraMovePos; 
     }
 
     void LateUpdate()

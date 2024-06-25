@@ -23,7 +23,7 @@ MonoBehaviour:
     talk: "\uADF8...\uADF8\uB798"
   completeConversations:
   - name: "\uC544\uAE30 \uB178\uB8E8"
-    talk: "\uD5C9...! \uC774\uAC74 \uC0AC\uACFC...? \uC800\uD55C\uD14C \uC8FC\uC2DC\uB294
-      \uAC74\uAC00\uC694? "
+    talk: "\uC815\uB9D0 \uACE0\uB9C8\uC6CC\uC694..! \uC774\uC81C \uB354\uC774\uC0C1
+      \uBC30\uAC00 \uC548\uACE0\uD30C\uC694."
   isCompleted: 0
   condition: {fileID: 11400000, guid: d178f1499c29e7a4b8abb6dedc079fa9, type: 2}

@@ -9,7 +9,9 @@ public class PlayerEvent : MonoBehaviour
     public event Action<EffectType> OnStartEffect;
     public event Action<EffectType> OnStopEffect;
     public event Action<bool> OnMovePlayer;
-
+    public event Action<bool> OnTeleportPlayer;
+    public event Action<int,int> OnPlayerHP;
+    public event Action OnDeadPlayer;
 
     public void AddItem(ItemType t, int amount = 1)
     {
@@ -36,9 +38,23 @@ public class PlayerEvent : MonoBehaviour
         OnMovePlayer?.Invoke(isMove);
     }
 
+    public void SetMoveTeleportPlayer(bool isTeleport)
+    {
+        OnTeleportPlayer?.Invoke(isTeleport);
+    }
 
     public void SetInteractiveState(bool isInteractive)
     {
         
+    }
+
+    public void SetPlayerDead()
+    {
+        OnDeadPlayer?.Invoke();
+    }
+
+    public void GetCurrentPlayerHP (int hp, int maxHp)
+    {
+        OnPlayerHP?.Invoke(hp, maxHp);
     }
 }

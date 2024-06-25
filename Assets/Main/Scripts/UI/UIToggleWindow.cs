@@ -19,6 +19,12 @@ public class UIToggleWindow : MonoBehaviour
 
     List<string> missionText;
 
+    [SerializeField]
+    Sprite toggleBtnUPImage;
+
+    [SerializeField]
+    Sprite toggleBtnDownImage;
+
     void Start()
     {
         // 초기화
@@ -36,16 +42,16 @@ public class UIToggleWindow : MonoBehaviour
         {
             // 창 접기
             windowPanel.DOSizeDelta(new Vector2(windowPanel.sizeDelta.x, collapsedHeight), 0.5f).SetEase(Ease.InOutQuad);
-            windowPanel.DOAnchorPosY(windowPanel.anchoredPosition.y + expandedHeight / 2, 0.5f).SetEase(Ease.InOutQuad);
-            toggleButton.GetComponent<RectTransform>().localScale = new Vector3(1, -1, 1);
+            //windowPanel.DOAnchorPosY(windowPanel.anchoredPosition.y + expandedHeight / 2, 0.5f).SetEase(Ease.InOutQuad);
+            toggleButton.image.sprite = toggleBtnUPImage;
 
         }
         else
         {
             // 창 펼치기
             windowPanel.DOSizeDelta(new Vector2(windowPanel.sizeDelta.x, expandedHeight), 0.5f).SetEase(Ease.InOutQuad);
-            windowPanel.DOAnchorPosY(windowPanel.anchoredPosition.y - expandedHeight / 2, 0.5f).SetEase(Ease.InOutQuad);
-            toggleButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            //windowPanel.DOAnchorPosY(windowPanel.anchoredPosition.y - expandedHeight / 2, 0.5f).SetEase(Ease.InOutQuad);
+            toggleButton.image.sprite = toggleBtnDownImage;
         }
         isExpanded = !isExpanded;
     }

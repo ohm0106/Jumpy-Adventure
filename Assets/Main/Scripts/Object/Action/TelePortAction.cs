@@ -27,7 +27,7 @@ public class TelePortAction : ObjectAction
         isTeleporting = true;
 
         PlayerEvent eventC =  FindObjectOfType<PlayerEvent>(); // Todo
-        eventC.SetMovePlayer(false);
+        eventC.SetMoveTeleportPlayer(false);
 
         eventC.transform.DOMoveY(eventC.transform.position.y + moveHeight, teleportDuration / 2);
         yield return new WaitForSeconds(teleportDuration / 2);
@@ -38,7 +38,7 @@ public class TelePortAction : ObjectAction
         yield return new WaitForSeconds(teleportDuration / 2);
 
         // reset
-        eventC.SetMovePlayer(true); // Todo
+        eventC.SetMoveTeleportPlayer(true); // Todo
         isTeleporting = false;
         isAction = false;
 

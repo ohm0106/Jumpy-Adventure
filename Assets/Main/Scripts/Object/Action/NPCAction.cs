@@ -48,6 +48,9 @@ public class NPCAction : ObjectAction
 
     public override IEnumerator CoAction()
     {
+        PlayerEvent eventC = FindObjectOfType<PlayerEvent>(); // Todo
+        eventC.SetMovePlayer(false);
+
         if (!isMission)
         {
             SetMission();

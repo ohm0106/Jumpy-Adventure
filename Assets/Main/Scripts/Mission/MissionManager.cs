@@ -72,14 +72,14 @@ public class MissionManager : Singleton<MissionManager>
     private IEnumerator CoStartMission(string detailName)
     {
         yield return new WaitUntil(() => !dialogueManager.GetIsDialogue());
-
+        eventP.SetMovePlayer(true);
         uiToggleWindow.UpdateWindowText(detailName);
     }
 
     private IEnumerator CoStartComplete(string missionName)
     {
         yield return new WaitUntil(() => !dialogueManager.GetIsDialogue());
-
+        eventP.SetMovePlayer(true);
         missionComplete.StartEffect(missionName);
     }
 

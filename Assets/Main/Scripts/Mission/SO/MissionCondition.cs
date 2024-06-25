@@ -1,6 +1,9 @@
 using UnityEngine;
-public interface MissionCondition
+
+public enum MissionType
 {
-    bool IsConditionMet();
-    void SetItemCurrentSet(int dgree);
+    NONE,
+    ITEM,
+    ENEMY
+
 }
