@@ -52,6 +52,7 @@ public class MissionManager : Singleton<MissionManager>
             subscribeItemMission.Add(mission.missionName,mission);
             dialogueManager.StartDialogue(mission.conversions);
             StartCoroutine(CoStartMission(mission.detailName));
+            mission.Init();
         }
 
         return true;
@@ -64,6 +65,7 @@ public class MissionManager : Singleton<MissionManager>
             subscribeEnemyMission.Add(mission.missionName, mission);
             dialogueManager.StartDialogue(mission.conversions);
             StartCoroutine(CoStartMission(mission.detailName));
+            mission.Init();
         }
 
         return true;
@@ -81,6 +83,7 @@ public class MissionManager : Singleton<MissionManager>
         yield return new WaitUntil(() => !dialogueManager.GetIsDialogue());
         eventP.SetMovePlayer(true);
         missionComplete.StartEffect(missionName);
+        
     }
 
     public bool CheckMissionComplete(string missionName)
@@ -88,8 +91,10 @@ public class MissionManager : Singleton<MissionManager>
         if(subscribeItemMission.ContainsKey(missionName)&&
            subscribeItemMission[missionName].condition.IsConditionMet())
         {
+            eventP.DeleteItem(subscribeItemMission[missionName].condition.GetRequiredType(), subscribeItemMission[missionName].condition.GetCurrentAmount());
             dialogueManager.StartDialogue(subscribeItemMission[missionName].completeConversations);
             StartCoroutine(CoStartComplete(missionName));
+            uiToggleWindow.DeleteWindowText(subscribeItemMission[missionName].detailName);
             return true;
         }
 

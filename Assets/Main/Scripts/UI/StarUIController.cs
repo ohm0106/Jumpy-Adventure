@@ -15,7 +15,10 @@ public class StarUIController : MonoBehaviour
 
 
     [SerializeField]
-    Sprite activeStarSprite; 
+    Sprite activeStarSprite;
+
+    [SerializeField]
+    PlayerEvent playerEvent; // todo 
 
     List<Star> stars = new List<Star>(); 
 
@@ -24,6 +27,24 @@ public class StarUIController : MonoBehaviour
     private void Start()
     {
         SetupStars();
+    }
+
+   
+
+    private void OnEnable()
+    {
+        playerEvent.OnAddItem += AddItemInventory;
+    }
+
+    private void OnDisable()
+    {
+        playerEvent.OnAddItem -= AddItemInventory;
+    }
+
+    void AddItemInventory(ItemType t, int amount = 1)
+    {
+        if (t == ItemType.STAR)
+            ActivateStar();
     }
 
     void SetupStars()
@@ -62,6 +83,7 @@ public class StarUIController : MonoBehaviour
     {
         if (currentIndex >= 0)
         {
+            Debug.Log("tets");
             stars[currentIndex].SetIsActive(activeStarSprite);
             currentIndex--;
         }

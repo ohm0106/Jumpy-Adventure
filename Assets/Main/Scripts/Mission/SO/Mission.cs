@@ -8,7 +8,13 @@ public class MissionItem : ScriptableObject
     public Conversation[] conversions;
     public Conversation[] completeConversations;
     public bool isCompleted;
-    public Condition<ItemType> condition;
+    public ItemCollectionCondition condition;
+
+    public void Init()
+    {
+        isCompleted = false;
+        condition.Init();
+    }
 
 }
 [CreateAssetMenu(fileName = "NewMissionEnemy", menuName = "Mission/MissionEnemy")]
@@ -19,8 +25,12 @@ public class MissionEnemy : ScriptableObject
     public Conversation[] conversions;
     public Conversation[] completeConversations;
     public bool isCompleted;
-    public Condition<EnemyType> condition;
-
+    public EnemyDefeatCondition condition;
+    public void Init()
+    {
+        isCompleted = false;
+        condition.Init();
+    }
 }
 
 public enum conversionType

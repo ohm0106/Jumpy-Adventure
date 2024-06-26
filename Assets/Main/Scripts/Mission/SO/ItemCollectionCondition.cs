@@ -19,4 +19,9 @@ public class ItemCollectionCondition : Condition<ItemType>
             currentAmount += amount;
         }
     }
+
+    public ItemType GetRequiredType()
+    {
+        return requiredItemName;
+    }
 }
