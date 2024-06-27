@@ -31,6 +31,13 @@ public class EnemyMovement : MonoBehaviour
     {
         Transform targetPoint = waypoints.points[currentPointIndex];
         Vector3 direction = (targetPoint.position - transform.position).normalized;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = targetRotation;
+        }
+
         transform.position += direction * speed * Time.deltaTime;
 
         if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
