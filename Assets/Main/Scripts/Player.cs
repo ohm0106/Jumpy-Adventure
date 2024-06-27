@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     bool isInteracting;
     [SerializeField]
+    bool isTeleport;
+    [SerializeField]
     bool isJump;
     [SerializeField]
     bool isJumping;
@@ -87,10 +89,12 @@ public class Player : MonoBehaviour
     void OnEnable()
     {
         eventController.OnMovePlayer += SetMove;
+        eventController.OnTeleportPlayer += SetTeleporting;
     }
     void OnDisable()
     {
         eventController.OnMovePlayer -= SetMove;
+        eventController.OnTeleportPlayer -= SetTeleporting;
     }
     void Update()
     {
@@ -133,6 +137,7 @@ public class Player : MonoBehaviour
             isJumping = true;
             verticalVelocity = jumpPower;
             anim.SetTrigger("doJump");
+            isJump = false;
         }
     }
 
@@ -175,6 +180,10 @@ public class Player : MonoBehaviour
     }
 
     void SetMove(bool isMove)
+    {
+        this.isMove = isMove;
+    }
+    void SetTeleporting(bool isMove)
     {
         this.isMove = isMove;
     }
@@ -286,8 +295,6 @@ public class Player : MonoBehaviour
     {
         isJump = true;
         isInvulnerablilty = true;
-        yield return new WaitForSeconds(0.02f);
-        isJump = false;
         yield return new WaitForSeconds(invulnerabliltyDelay);
       
         isInvulnerablilty = false;
@@ -369,7 +376,7 @@ public class Player : MonoBehaviour
             anim.SetBool("isWalk", false);
             
         }
-        else
+        else if(isMove)
         {
             anim.SetBool("isWalk", true);
             eventController.StartEffect(EffectType.WALK);
@@ -385,7 +392,7 @@ public class Player : MonoBehaviour
             isInteracting = true;
             Interact(nearestInteractObj.SetPlayerInteraction());
             Debug.Log("CLICK");
-            anim.SetTrigger("doInteraction");
+            anim.SetTrigger("doBehavior");
         }    
     }
 
@@ -394,10 +401,6 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             isJump = true;
-        }
-        else if (context.canceled)
-        {
-            isJump = false;
         }
     }
     #endregion

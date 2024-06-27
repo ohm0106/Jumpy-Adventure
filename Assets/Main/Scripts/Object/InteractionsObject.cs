@@ -81,11 +81,12 @@ public class InteractionsObject : MonoBehaviour, IPlayerAction
 
     IEnumerator CoPerformActionInorder()
     {
+        player.GetComponent<PlayerEvent>().SetMovePlayer(false);
         foreach (var arr in clickAction)
         {
             yield return arr.StartActionReturn();
         }
-       
+        player.GetComponent<PlayerEvent>().SetMovePlayer(true);
     }
 
     public void ReleaseAroundPerformAction()

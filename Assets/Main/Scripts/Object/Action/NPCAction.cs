@@ -65,6 +65,11 @@ public class NPCAction : ObjectAction
                 missionQ.Dequeue(); // Remove the completed mission from the queue
                 isMission = false; // Reset mission flag to start the next mission
             }
+            else
+            {
+                eventC.SetMovePlayer(true);
+            }
+           
         }
 
         isAction = false;

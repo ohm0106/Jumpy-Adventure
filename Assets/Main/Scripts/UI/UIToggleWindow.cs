@@ -59,15 +59,31 @@ public class UIToggleWindow : MonoBehaviour
 
     public void UpdateWindowText(string newText)
     {
-        windowText.text = newText;
+        if (!missionText.Contains(newText))
+        {
+            missionText.Add(newText);
+            RefreshWindowText();
+        }
+
         if (!isExpanded)
             ToggleWindow();
     }
 
     public void DeleteWindowText(string alreadyText)
     {
+        if (missionText.Contains(alreadyText))
+        {
+            missionText.Remove(alreadyText);
+            RefreshWindowText();
+        }
 
-        if (!isExpanded)
+        if (isExpanded)
             ToggleWindow();
     }
+
+    private void RefreshWindowText()
+    {
+        windowText.text = string.Join("\n", missionText);
+    }
+
 }

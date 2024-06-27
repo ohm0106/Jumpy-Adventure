@@ -36,7 +36,7 @@ public class PlayerInventory : MonoBehaviour
     void DeleteItem(ItemType t, int amount)
     {
         if (invenDic.ContainsKey(t))
-            invenDic[t] -= amount;
+            invenDic[t] += amount;
         else
             invenDic.Add(t, amount);
 

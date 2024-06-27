@@ -21,26 +21,28 @@ public class TelePortAction : ObjectAction
 
     public override IEnumerator CoAction()
     {
-        if (isTeleporting)
-            yield return null;
+        if (!isTeleporting)
+        {
+            isTeleporting = true;
 
-        isTeleporting = true;
+            PlayerEvent eventC = FindObjectOfType<PlayerEvent>(); // Todo
+            eventC.SetMoveTeleportPlayer(false);
 
-        PlayerEvent eventC =  FindObjectOfType<PlayerEvent>(); // Todo
-        eventC.SetMoveTeleportPlayer(false);
+            eventC.transform.DOMoveY(eventC.transform.position.y + moveHeight, teleportDuration / 2);
+            yield return new WaitForSeconds(teleportDuration / 2);
 
-        eventC.transform.DOMoveY(eventC.transform.position.y + moveHeight, teleportDuration / 2);
-        yield return new WaitForSeconds(teleportDuration / 2);
+            eventC.transform.position = new Vector3(teleportPosition.position.x, eventC.transform.position.y, teleportPosition.position.z);
 
-        eventC.transform.position = new Vector3(teleportPosition.position.x, eventC.transform.position.y, teleportPosition.position.z);
+            eventC.transform.DOMoveY(teleportPosition.position.y, teleportDuration / 2);
+            yield return new WaitForSeconds(teleportDuration / 2);
 
-        eventC.transform.DOMoveY(teleportPosition.position.y, teleportDuration / 2);
-        yield return new WaitForSeconds(teleportDuration / 2);
+            // reset
+            eventC.SetMoveTeleportPlayer(true); // Todo
+            isTeleporting = false;
+            isAction = false;
 
-        // reset
-        eventC.SetMoveTeleportPlayer(true); // Todo
-        isTeleporting = false;
-        isAction = false;
+        }
+
 
     }
 }

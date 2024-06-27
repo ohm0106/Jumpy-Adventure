@@ -12,6 +12,7 @@ public class PlayerEvent : MonoBehaviour
     public event Action<bool> OnTeleportPlayer;
     public event Action<int,int> OnPlayerHP;
     public event Action OnDeadPlayer;
+    public event Action<IPlayerAction> OnInteractionPlayer;
 
     public void AddItem(ItemType t, int amount = 1)
     {
@@ -20,7 +21,7 @@ public class PlayerEvent : MonoBehaviour
 
     public void DeleteItem(ItemType t, int amount = 1)
     {
-        OnDeleteItem?.Invoke(t, amount);
+        OnDeleteItem?.Invoke(t, amount * -1);
     }
 
     public void StartEffect(EffectType effect)
@@ -43,9 +44,9 @@ public class PlayerEvent : MonoBehaviour
         OnTeleportPlayer?.Invoke(isTeleport);
     }
 
-    public void SetInteractiveState(bool isInteractive)
+    public void SetInteractive(IPlayerAction actions)
     {
-        
+        OnInteractionPlayer?.Invoke(actions);
     }
 
     public void SetPlayerDead()
