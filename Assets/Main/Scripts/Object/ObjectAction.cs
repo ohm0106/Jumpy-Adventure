@@ -7,6 +7,7 @@ public class ObjectAction : MonoBehaviour
 
     protected virtual void Start()
     {
+        // init hear
     }
 
     public virtual void StartAction()
