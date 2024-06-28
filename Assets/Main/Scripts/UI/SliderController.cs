@@ -4,35 +4,12 @@ using UnityEngine.UI;
 public class SliderController : MonoBehaviour
 {
     [SerializeField]
-    Image hpBar;
+    protected Image hpBar;
 
     [SerializeField]
-    TMP_Text hpText;
+    protected TMP_Text hpText;
 
-    [SerializeField]
-    PlayerEvent playerEvent; //todo 
-
-    void Start()
-    {
-    }
-
-    private void OnDestroy()
-    {
-        if (playerEvent != null)
-        {
-            playerEvent.OnPlayerHP -= UpdateHPUI;
-        }
-    }
-
-    private void OnEnable()
-    {
-        if (playerEvent != null)
-        {
-            playerEvent.OnPlayerHP += UpdateHPUI;
-        }
-    }
-
-    private void UpdateHPUI(int currentHP, int maxHP)
+    public void UpdateSliderUI(int currentHP, int maxHP)
     {
         if (hpBar != null)
         {
@@ -46,3 +23,4 @@ public class SliderController : MonoBehaviour
     }
 
 }
+

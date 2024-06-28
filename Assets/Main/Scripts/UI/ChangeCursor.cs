@@ -3,13 +3,13 @@ using UnityEngine;
 public class ChangeCursor : Singleton<ChangeCursor>
 {
     [SerializeField]
-    private Texture2D defaultCursorTexture; 
+     Texture2D defaultCursorTexture; 
 
     [SerializeField]
-    private Texture2D clickedCursorTexture; 
-
+     Texture2D clickedCursorTexture;
+    
     [SerializeField]
-    private Vector2 hotSpot = Vector2.zero; 
+     Vector2 hotSpot = Vector2.zero; 
 
     private void Start()
     {

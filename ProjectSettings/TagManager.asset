@@ -12,6 +12,7 @@ TagManager:
   - FxTemporaire
   - STAR
   - Star
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Stair
   - SpiderWeb
   - Star
-  - 
+  - Enemy
   - 
   - 
   - 

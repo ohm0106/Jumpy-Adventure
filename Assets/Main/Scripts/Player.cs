@@ -77,9 +77,13 @@ public class Player : MonoBehaviour
     [Header("[기본 공격 설정]")]
     float attackRange = 2f; // 공격 범위
     float attackAngle = 60f; // 공격 범위 내 각도
-    float attackCooldown = 1f; // 공격 쿨다운 시간
+    float attackCooldown = 0.5f; // 공격 쿨다운 시간
     float lastAttackTime;
     bool isAttack;
+
+    [SerializeField]
+    LayerMask enemyLayer;
+
     void Awake()
     {
         curSpeed = speed;
@@ -117,7 +121,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackCooldown)
         {
-            Attack();
+            StartCoroutine(PerformAttack());
             lastAttackTime = Time.time;
             return;
         }
@@ -158,6 +162,9 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         if (isMove == false)
+            return;
+
+        if (isAttack)
             return;
 
         // 넉백
@@ -420,7 +427,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region 공격 
-    void Attack()
+    IEnumerator PerformAttack()
     {
         isAttack = true;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -440,20 +447,27 @@ public class Player : MonoBehaviour
             }
 
             // 공격 범위 내의 적 감지
-            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, attackRange, LayerMask.NameToLayer("Enemy"));
-            foreach (Collider enemy in hitEnemies)
+            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, attackRange, enemyLayer);
+            foreach (Collider arr in hitEnemies)
             {
-                Vector3 toEnemy = (enemy.transform.position - transform.position).normalized;
-                if (Vector3.Angle(transform.forward, toEnemy) <= attackAngle / 2)
+                Enemy enemy = arr.transform.GetComponent<Enemy>();
+                if (enemy != null)
                 {
-                    // TODO : 적에게 데미지 주기
-                    Debug.Log("attack!");
+                    Vector3 toEnemy = (arr.transform.position - transform.position).normalized;
+                    if (Vector3.Angle(transform.forward, toEnemy) <= attackAngle / 2)
+                    {
+                        // TODO : 적에게 데미지 주기
+                        Debug.Log("attack!");
+                    }
                 }
             }
         }
 
+        yield return new WaitForSeconds(0.8f);
+
         isAttack = false;
     }
+
 
     // 공격 범위를 시각적으로 표시 (디버그 용도)
     void OnDrawGizmosSelected()
@@ -466,7 +480,5 @@ public class Player : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
         Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
     }
-
-
     #endregion
 }

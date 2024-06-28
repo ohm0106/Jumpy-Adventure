@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public Waypoints waypoints;
-    public float speed = 2.0f;
-    private int currentPointIndex = 0;
+    [SerializeField]
+    Waypoints waypoints;
+    [SerializeField]
+    float speed = 2.0f;
+    int currentPointIndex = 0;
+
+    bool isMove;
 
     void Start()
     {
+        isMove = true;
         if (waypoints == null || waypoints.points.Length == 0)
         {
             Debug.LogError("Waypoints are not set or empty!");
@@ -23,6 +28,8 @@ public class EnemyMovement : MonoBehaviour
         {
             return;
         }
+        if (!isMove)
+            return;
 
         MoveTowardsWaypoint();
     }
@@ -45,4 +52,12 @@ public class EnemyMovement : MonoBehaviour
             currentPointIndex = (currentPointIndex + 1) % waypoints.points.Length;
         }
     }
+
+
+
+    public void SetMovement(bool isMove)
+    {
+        this.isMove = isMove;
+    }
+
 }

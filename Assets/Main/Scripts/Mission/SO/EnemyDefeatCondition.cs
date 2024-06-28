@@ -21,8 +21,3 @@ public class EnemyDefeatCondition : Condition<EnemyType>
         }
     }
 }
-
-public enum EnemyType
-{
-    NONE
-}
