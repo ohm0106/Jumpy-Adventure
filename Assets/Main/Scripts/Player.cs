@@ -75,6 +75,8 @@ public class Player : MonoBehaviour
     private Vector3 knockbackDirection;
 
     [Header("[기본 공격 설정]")]
+    [SerializeField]
+    Weapon weapon;
     float attackRange = 2f; // 공격 범위
     float attackAngle = 60f; // 공격 범위 내 각도
     float attackCooldown = 0.5f; // 공격 쿨다운 시간
@@ -350,6 +352,12 @@ public class Player : MonoBehaviour
             interactable.OnPlayerEnter(this);
         }
 
+        IWeaponTrigger weaponTrigger = other.GetComponent<IWeaponTrigger>();
+        if (weaponTrigger != null && weapon!= weaponTrigger.GetThis())
+        {
+            weaponTrigger.OnObjectEnter( transform,(Vector3 v) => { ApplyKnockback(v);}, (int i) => { Damage(i); });
+        }
+
     }
     private void OnTriggerExit(Collider other)
     {
@@ -358,6 +366,14 @@ public class Player : MonoBehaviour
         {
             interactable.OnPlayerExit(this);
         }
+
+        IWeaponTrigger weaponTrigger = other.GetComponent<IWeaponTrigger>();
+        if (weaponTrigger != null && weapon != weaponTrigger.GetThis())
+        {
+            weaponTrigger.OnObjectExit();
+        }
+
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -441,44 +457,14 @@ public class Player : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             transform.rotation = lookRotation;
 
-            if (anim != null)
-            {
-                anim.SetTrigger("doAttack");
-            }
-
-            // 공격 범위 내의 적 감지
-            Collider[] hitEnemies = Physics.OverlapSphere(transform.position, attackRange, enemyLayer);
-            foreach (Collider arr in hitEnemies)
-            {
-                Enemy enemy = arr.transform.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    Vector3 toEnemy = (arr.transform.position - transform.position).normalized;
-                    if (Vector3.Angle(transform.forward, toEnemy) <= attackAngle / 2)
-                    {
-                        // TODO : 적에게 데미지 주기
-                        Debug.Log("attack!");
-                    }
-                }
-            }
+            anim.SetTrigger("doAttack");
+            weapon.Use();
         }
 
         yield return new WaitForSeconds(0.8f);
-
+        weapon.StopUse();
         isAttack = false;
     }
 
-
-    // 공격 범위를 시각적으로 표시 (디버그 용도)
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        Vector3 forward = transform.forward * attackRange;
-        Vector3 leftBoundary = Quaternion.Euler(0, -attackAngle / 2, 0) * forward;
-        Vector3 rightBoundary = Quaternion.Euler(0, attackAngle / 2, 0) * forward;
-        Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
-        Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
-    }
     #endregion
 }

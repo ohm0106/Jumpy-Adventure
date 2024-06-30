@@ -43,4 +43,9 @@ public class BasicAttackDecorator : EnemyDecorator
         if (leftBareKnuckles != null)
             leftBareKnuckles.StopUse();
     }
+
+    public override Weapon GetWeapon()
+    {
+        return rightBareKnuckles;
+    }
 }

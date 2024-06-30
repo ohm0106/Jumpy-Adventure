@@ -9,10 +9,17 @@ public class EnemyMovement : MonoBehaviour
     int currentPointIndex = 0;
 
     bool isMove;
+    private CharacterController characterController;
 
     void Start()
     {
         isMove = true;
+        characterController = GetComponent<CharacterController>();
+        if (characterController == null)
+        {
+            characterController = gameObject.AddComponent<CharacterController>();
+        }
+
         if (waypoints == null || waypoints.points.Length == 0)
         {
             Debug.LogError("Waypoints are not set or empty!");
@@ -42,10 +49,11 @@ public class EnemyMovement : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = targetRotation;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
         }
 
-        transform.position += direction * speed * Time.deltaTime;
+        Vector3 move = direction * speed * Time.deltaTime;
+        characterController.Move(move);
 
         if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
         {
@@ -53,11 +61,8 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-
-
     public void SetMovement(bool isMove)
     {
         this.isMove = isMove;
     }
-
 }

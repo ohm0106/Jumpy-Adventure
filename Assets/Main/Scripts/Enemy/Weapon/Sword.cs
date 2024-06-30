@@ -1,24 +1,32 @@
 using System;
 using UnityEngine;
 
-public class BareKnuckle : Weapon , IWeaponTrigger
+public class Sword : Weapon, IWeaponTrigger
 {
-    int damage = 1;
+    int damage = 10;
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         StopUse();
     }
 
-    public override void Use()
+    // Update is called once per frame
+    void Update()
     {
-        Debug.Log("Using Bare Knuckle");
-        GetComponent<Collider>().enabled = true;
         
     }
+
+
+    public override void Use()
+    {
+        Debug.Log("Using Sword");
+        GetComponent<Collider>().enabled = true;
+    }
+
     public override void StopUse()
     {
-        Debug.Log("Stop Using Bare Knuckle");
+        Debug.Log("Stop Using Sword");
         GetComponent<Collider>().enabled = false;
     }
 
@@ -31,11 +39,11 @@ public class BareKnuckle : Weapon , IWeaponTrigger
 
     public void OnObjectExit()
     {
-
+        //throw new NotImplementedException();
     }
-
     public Weapon GetThis()
     {
         return this;
     }
 }
+

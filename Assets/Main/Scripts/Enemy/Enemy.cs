@@ -14,17 +14,31 @@ public abstract class Enemy : MonoBehaviour
     protected int currentHealth;
     protected IEnemyState currentState;
     protected Animator anim;
-    void Start()
+    protected EnemyDecorator enemyDecorator;
+    bool isKnockedBack = false;
+    Vector3 knockbackDirection;
+    float knockbackTime = 0.5f;
+    float knockbackCounter = 0;
+
+    CharacterController characterController;
+    Vector3 velocity;
+    [SerializeField]
+    float gravity = -9.81f;
+
+    public void Start()
     {
         currentHealth = maxHealth;
+        characterController = GetComponent<CharacterController>();
+        if (characterController == null)
+        {
+            characterController = gameObject.AddComponent<CharacterController>();
+        }
     }
 
-
-    public void ChangeState(IEnemyState newState)
+    public virtual void ChangeState(IEnemyState newState)
     {
-        if(newState.Equals(currentState))
+        if (currentState != null && newState.GetType() == currentState.GetType())
         {
-            Debug.Log("already state");
             return;
         }
         if (currentState != null)
@@ -37,6 +51,32 @@ public abstract class Enemy : MonoBehaviour
 
     public void Update()
     {
+        if (isKnockedBack)
+        {
+            knockbackCounter -= Time.deltaTime;
+            if (knockbackCounter <= 0)
+            {
+                isKnockedBack = false;
+            }
+            else
+            {
+                Vector3 horizontalKnockback = new Vector3(knockbackDirection.x, 0, knockbackDirection.z);
+                characterController.Move(horizontalKnockback * Time.deltaTime);
+                return;
+            }
+        }
+
+        if (!characterController.isGrounded)
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+        else
+        {
+            velocity.y = 0;
+        }
+
+        characterController.Move(velocity * Time.deltaTime);
+
         if (currentState != null)
         {
             currentState.Execute(this);
@@ -64,10 +104,43 @@ public abstract class Enemy : MonoBehaviour
     {
         return currentState;
     }
-    public abstract void Attack();
+
+    protected abstract void Attack();
 
     public abstract void PerformAttack();
 
     public abstract float GetAttackCoolTime();
-}
 
+    protected abstract void Damage(int hp);
+
+    public void ApplyKnockback(Vector3 direction)
+    {
+        isKnockedBack = true;
+        knockbackDirection = new Vector3(direction.x, 0, direction.z);
+        knockbackCounter = knockbackTime;
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("check!!! Trigger");
+        //TODO : ³Ë¹é State ·Î ¹Ù²Ü °Í. 
+        IWeaponTrigger weaponTrigger = other.GetComponent<IWeaponTrigger>();
+        if (weaponTrigger != null && enemyDecorator.GetWeapon() != weaponTrigger.GetThis())
+        {
+            anim.SetTrigger("doHit");
+            Debug.Log("check!!! Trigger");
+            weaponTrigger.OnObjectEnter(transform, (Vector3 v) => { ApplyKnockback(v); }, (int hp) => { Damage(hp); });
+        }
+    }
+
+    protected void OnTriggerExit(Collider other)
+    {
+        Debug.Log("check!!! Trigger");
+        IWeaponTrigger weaponTrigger = other.GetComponent<IWeaponTrigger>();
+        if (weaponTrigger != null)
+        {
+            weaponTrigger.OnObjectExit();
+        }
+    }
+}
+ 

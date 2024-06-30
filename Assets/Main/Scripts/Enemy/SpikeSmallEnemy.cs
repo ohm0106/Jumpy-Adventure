@@ -8,16 +8,20 @@ public class SpikeSmallEnemy : Enemy
     float chaseRange = 2.5f;
     float moveSpeed = 2.0f;
 
-    EnemyDecorator enemyDecorator;
+    
     void Start()
     {
+        base.Start();
         anim = GetComponentInChildren<Animator>();
         enemyDecorator = GetComponent<EnemyDecorator>();
         target = FindObjectOfType<Player>().gameObject.transform; // todo
         ChangeState(new PatrolState());
     }
 
-
+    public override void ChangeState(IEnemyState newState)
+    {
+        base.ChangeState(newState);
+    }
 
     void MoveTowardsTarget()
     {
@@ -74,7 +78,7 @@ public class SpikeSmallEnemy : Enemy
         ChangeState(new ChaseState());
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         ChangeState(new AttackState());
     }
@@ -93,4 +97,10 @@ public class SpikeSmallEnemy : Enemy
     {
         return 4f;
     }
+
+    protected override void Damage(int hp)
+    {
+        // todo : hp 및 기본 값들을 전달. 
+    }
+
 }

@@ -16,7 +16,6 @@ public abstract class EnemyDecorator : EnemyComponent
             decoratedEnemy.Attack();
         }
     }
-
     public override void StopAttack()
     {
         if (decoratedEnemy != null)
