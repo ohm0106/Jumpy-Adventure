@@ -35,6 +35,7 @@ public class Sword : Weapon, IWeaponTrigger
         Vector3 knockbackDirection = (t.position - transform.position).normalized;
         onKnockback.Invoke(knockbackDirection);
         onDamage.Invoke(damage);
+        TriggerEffect(t.position);
     }
 
     public void OnObjectExit()

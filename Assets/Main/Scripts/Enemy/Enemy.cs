@@ -17,7 +17,7 @@ public abstract class Enemy : MonoBehaviour
     protected EnemyDecorator enemyDecorator;
     bool isKnockedBack = false;
     Vector3 knockbackDirection;
-    float knockbackTime = 0.5f;
+    float knockbackTime = 1f;
     float knockbackCounter = 0;
 
     CharacterController characterController;
