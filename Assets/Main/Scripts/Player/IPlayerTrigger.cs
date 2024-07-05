@@ -9,7 +9,7 @@ public interface IPlayerTrigger
 }
 
 
-//이벤트를 받는 것. 
+
 public interface IWeaponTrigger
 {
     void OnObjectEnter(Transform t,Action<Vector3> onKnockback, Action<int> onDamage);

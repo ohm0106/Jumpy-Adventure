@@ -3,20 +3,23 @@ using UnityEngine;
 public class PlayerEffect : MonoBehaviour
 {
     [SerializeField]
-    EffectSetting walkEffect;
+    EffectObject walkEffect;
 
     PlayerEvent eventController;
 
     [SerializeField]
     GameObject effects;
 
-    void Awake()
+    void Start()
     {
-        eventController = GetComponent<PlayerEvent>();
+        ObjectPoolManager.Instance.CreatePool(walkEffect, 10, effects.transform);
     }
 
     void OnEnable()
     {
+        if(eventController == null)
+            eventController = GetComponent<PlayerEvent>();
+
         eventController.OnStartEffect += StartEffectFromType;
         eventController.OnStopEffect += StopEffectFromType;
 
@@ -24,6 +27,8 @@ public class PlayerEffect : MonoBehaviour
 
     void OnDisable()
     {
+        if (eventController == null)
+            eventController = GetComponent<PlayerEvent>();
         eventController.OnStartEffect -= StartEffectFromType;
         eventController.OnStopEffect -= StopEffectFromType;
     }
@@ -33,9 +38,12 @@ public class PlayerEffect : MonoBehaviour
         switch (t)
         {
             case EffectType.WALK:
-                if (walkEffect.effect != null)
+                if (walkEffect.gameObject != null)
                 {
-                   Instantiate(walkEffect.effect, transform.position + (transform.forward * -0.3f), Quaternion.identity, effects.transform);
+                    //Instantiate(walkEffect.effect, , Quaternion.identity, effects.transform);
+                    EffectObject effect = ObjectPoolManager.Instance.GetObject<EffectObject>();
+                    effect.transform.position = transform.position + (transform.forward * -0.3f);
+                    effect.transform.rotation = Quaternion.identity;
                 }
                 break;
         }
@@ -55,15 +63,10 @@ public class PlayerEffect : MonoBehaviour
 
 }
 
-[System.Serializable]
-public class EffectSetting
-{
-    public EffectType type;
-    public GameObject effect;
-}
 
 public enum EffectType
 {
     Click,
-    WALK
+    WALK,
+    HIT
 }
